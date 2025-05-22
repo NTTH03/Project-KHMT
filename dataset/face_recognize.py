@@ -5,28 +5,27 @@ import pickle
 from datetime import datetime
 import os
 
-# Tải dữ liệu đã mã hóa khuôn mặt
+# Tải dữ liệu mã hóa 
 with open("mahoa.pkl", "rb") as f:
     DANH_SACH_MA_HOA, TEN_LOP = pickle.load(f)
 
 def ghi_danh_sach(name):
-
     ngay_hien_tai = datetime.now().strftime("%Y-%m-%d")
     ten_file = f"thamdu_{ngay_hien_tai}.csv"
 
-    # Tạo file nếu chưa tồn tại
+    # Tạo file
     if not os.path.exists(ten_file):
         with open(ten_file, "w", encoding="utf-8") as f:
-            f.write("Tên,Thời gian\n")
+            f.write("Name,Time\n")  # Chỉ có Name và Time
 
     # Mở file ở chế độ append (thêm vào cuối)
-    with open(ten_file, "a+", encoding="utf-8") as f: #Thêm encoding='utf-8'
+    with open(ten_file, "a+", encoding="utf-8") as f:
         thoi_gian = datetime.now().strftime("%H:%M:%S")
-        f.writelines(f"{name},{thoi_gian}\n")
+        f.writelines(f"{name},{thoi_gian}\n")  # Chỉ ghi tên và giờ
         print(f"Ghi danh: {name} lúc {thoi_gian}")
 
 # Mở camera
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture("videocheck.mp4")
 if not cap.isOpened():
     raise ValueError("Không thể mở camera.")
 
@@ -37,7 +36,6 @@ thoi_gian_cho_phep_ghi_lai = 100
 vi_tri_khuon_mat = []
 ma_hoa_khung_hinh = []
 thoi_gian_lan_cuoi_ghi_danh = {}  # Dictionary để theo dõi thời gian ghi danh cuối cùng của mỗi người
-
 
 while True:
     try:
